@@ -21,7 +21,7 @@ describe('UsersController', () => {
     const result = await controller.findOne('1');
     expect(result).toBeDefined();
     expect(result).toEqual({
-      id: 1,
+      id: '1',
       name: 'John Doe',
       email: 'john@example.com',
     });
@@ -34,7 +34,7 @@ describe('UsersController', () => {
     });
     expect(result).toBeDefined();
     expect(result).toEqual({
-      id: 1,
+      id: '1',
       name: 'John Doe',
       email: 'john@example.com',
     });
@@ -46,7 +46,7 @@ describe('UsersController', () => {
     });
     expect(result).toBeDefined();
     expect(result).toEqual({
-      id: 1,
+      id: '1',
       name: 'John Doe',
       email: 'john@example.com',
     });
@@ -55,7 +55,7 @@ describe('UsersController', () => {
     const result = await controller.remove('1');
     expect(result).toBeDefined();
     expect(result).toEqual({
-      id: 1,
+      id: '1',
       name: 'John Doe',
       email: 'john@example.com',
     });
