@@ -18,7 +18,7 @@ describe('UsersController', () => {
     expect(controller).toBeDefined();
   });
   it('should return a user', async () => {
-    const result = await controller.findOne(`1`);
+    const result = await controller.findOne('1');
     expect(result).toBeDefined();
     expect(result).toEqual({
       id: 1,
@@ -30,6 +30,7 @@ describe('UsersController', () => {
     const result = await controller.create({
       name: 'John Doe',
       email: 'john@example.com',
+      password: 'XXXXXXXX',
     });
     expect(result).toBeDefined();
     expect(result).toEqual({
@@ -39,7 +40,7 @@ describe('UsersController', () => {
     });
   });
   it('should update a user', async () => {
-    const result = await controller.update(`1`, {
+    const result = await controller.update('1', {
       name: 'John Doe',
       email: 'john@example.com',
     });
@@ -51,7 +52,7 @@ describe('UsersController', () => {
     });
   });
   it('should delete a user', async () => {
-    const result = await controller.remove(1);
+    const result = await controller.remove('1');
     expect(result).toBeDefined();
     expect(result).toEqual({
       id: 1,
