@@ -35,8 +35,8 @@ describe('UsersController', () => {
     const newUser = {
       firstName: 'John',
       lastName: 'Doe',
-      created_at: new Date(),
-      updated_at: new Date(),
+      created_at: new Date(2024, 0, 1),
+      updated_at: new Date(2024, 0, 1),
       birthDate: '10/10/1010',
     };
 
@@ -51,7 +51,7 @@ describe('UsersController', () => {
 
     // Buscando usuário
     const foundUser = await controller.findOne(createdUser.id);
-
+    console.log(foundUser);
     expect(foundUser).toEqual(createdUser);
   });
   it('should update a user', async () => {
