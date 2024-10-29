@@ -4,23 +4,26 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
+  users = []
   create(createUserDto: CreateUserDto) {
-    return console.log(createUserDto), 'This action adds a new user';
+    this.users.push(createUserDto);
+    return createUserDto;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  findOrder(firstName: string, lastName: string): string {
+    return firstName + ' ' + lastName;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+  const user = this.users.find((user) => user.id === id);
+    return { user };
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     return console.log(updateUserDto), `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return `This action removes a ${id} user`;
   }
 }
