@@ -19,8 +19,7 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    const user = this.users.find(() => user.id === id);
-    return { user };
+    return this.users.find(user => user.id === id);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

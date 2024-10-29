@@ -40,10 +40,19 @@ describe('UsersController', () => {
       birthDate: '10/10/1010',
     };
 
-    expect(controller.create(newUser)).toEqual({
+    // Criou usuário, incrementando o id
+    const createdUser = await controller.create(newUser);
+
+    // Comparando createUser com o user do db
+    expect(createdUser).toEqual({
       id: expect.any(String),
       ...newUser,
     });
+
+    // Buscando usuário
+    const foundUser = await controller.findOne(createdUser.id);
+
+    expect(foundUser).toEqual(createdUser);
   });
   it('should update a user', async () => {
     const result = await controller.update('1', {
