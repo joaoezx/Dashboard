@@ -4,10 +4,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  users = []
-  create(createUserDto: CreateUserDto) {
-    this.users.push(createUserDto);
-    return createUserDto;
+  users = [];
+  create(newUser: CreateUserDto) {
+    const user = {
+      id: String(Math.random()).split('0.')[1],
+      ...newUser,
+    };
+    this.users.push(user);
+    return user;
   }
 
   findOrder(firstName: string, lastName: string): string {
@@ -15,7 +19,7 @@ export class UsersService {
   }
 
   findOne(id: string) {
-  const user = this.users.find((user) => user.id === id);
+    const user = this.users.find(() => user.id === id);
     return { user };
   }
 

@@ -31,21 +31,18 @@ describe('UsersController', () => {
     expect(result).toBeDefined();
     expect(result).toBe('John Doe');
   });
-  it('should create a user', async () => {
-    const result = await controller.create({
+  it('should create a new user', async () => {
+    const newUser = {
       firstName: 'John',
       lastName: 'Doe',
       created_at: new Date(),
       updated_at: new Date(),
       birthDate: '10/10/1010',
-    });
-    expect(result).toBeDefined();
-    expect(result).toEqual({
-      firstName: 'John',
-      lastName: 'Doe',
-      created_at: new Date(),
-      updated_at: new Date(),
-      birthDate: '10/10/1010',
+    };
+
+    expect(controller.create(newUser)).toEqual({
+      id: expect.any(String),
+      ...newUser,
     });
   });
   it('should update a user', async () => {
