@@ -63,15 +63,19 @@ describe('UsersController', () => {
       birthDate: '10/10/1010',
     };
 
+    // incrementando o id
     const createdUser = await controller.create(newUser);
 
+    // novos dados injetados no usuário
     const updateUser = {
       lastName: 'Smith',
       updated_at: new Date(2024, 0, 2),
     };
 
+    // localizando o usuário pelo id e fazendo o uptade
     const updatedUser = await controller.update(createdUser.id, updateUser);
 
+    // comparando se os dados atualizados estão corretos
     expect(updatedUser).toEqual({
       id: createdUser.id,
       firstName: 'John',
@@ -81,6 +85,7 @@ describe('UsersController', () => {
       birthDate: '10/10/1010',
     });
 
+    // comparando o usuário do banco de dados
     const foundUser = await controller.findOne(createdUser.id);
     console.log(foundUser);
     expect(foundUser).toEqual({
