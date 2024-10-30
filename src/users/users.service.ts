@@ -14,7 +14,7 @@ export class UsersService {
     return user;
   }
 
-  findOrder(firstName: string, lastName: string): string {
+  findAll(firstName: string, lastName: string): string {
     return firstName + ' ' + lastName;
   }
 
@@ -22,10 +22,18 @@ export class UsersService {
     return this.users.find(user => user.id === id);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return console.log(updateUserDto), `This action updates a #${id} user`;
-  }
+  update(id: string, updateUser: UpdateUserDto) {
+    const userIndex = this.users.findIndex(user => user.id === id);
 
+    const updatedUser = {
+      ...this.users[userIndex],
+      ...updateUser,
+      updated_at: new Date(),
+    };
+
+    this.users[userIndex] = updatedUser;
+    return updatedUser;
+  }
   remove(id: string) {
     return `This action removes a ${id} user`;
   }

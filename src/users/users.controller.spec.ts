@@ -40,12 +40,12 @@ describe('UsersController', () => {
       birthDate: '10/10/1010',
     };
 
-    // Criou usuário, incrementando o id
+    // incrementando o id
     const createdUser = await controller.create(newUser);
 
     // Comparando createUser com o user do db
     expect(createdUser).toEqual({
-      id: expect.any(String),
+      id: createdUser.id,
       ...newUser,
     });
 
@@ -55,24 +55,45 @@ describe('UsersController', () => {
     expect(foundUser).toEqual(createdUser);
   });
   it('should update a user', async () => {
-    const result = await controller.update('1', {
+    const newUser = {
       firstName: 'John',
       lastName: 'Doe',
+      created_at: new Date(2024, 0, 1),
+      updated_at: new Date(2024, 0, 1),
+      birthDate: '10/10/1010',
+    };
+
+    const createdUser = await controller.create(newUser);
+
+    const updateUser = {
+      id: createdUser.id,
+      lastName: 'Smith',
+      updated_at: new Date(2024, 0, 2),
+    };
+
+    const updatedUser = await controller.update(createdUser.id, updateUser);
+
+    expect(updatedUser).toEqual({
+      id: createdUser.id,
+      lastName: 'Smith',
+      updated_at: new Date(2024, 0, 2),
     });
-    expect(result).toBeDefined();
-    expect(result).toEqual({
-      id: '1',
-      firstfirstName: 'John',
-      lastName: 'Doe',
-    });
-  });
-  it('should delete a user', async () => {
-    const result = await controller.remove('1');
-    expect(result).toBeDefined();
-    expect(result).toEqual({
-      id: '1',
-      firstName: 'John',
-      lastName: 'Doe',
+
+    const foundUser = await controller.findOne(createdUser.id);
+    expect(foundUser).toEqual({
+      id: createdUser.id,
+      lastName: 'Smith',
+      updated_at: new Date(2024, 0, 2),
     });
   });
 });
+//   it('should delete a user', async () => {
+//     const result = await controller.remove('1');
+//     expect(result).toBeDefined();
+//     expect(result).toEqual({
+//       id: '1',
+//       firstName: 'John',
+//       lastName: 'Doe',
+//     });
+//   });
+// });

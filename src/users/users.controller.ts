@@ -25,7 +25,7 @@ export class UsersController {
     @Param('firstName') firstName: string,
     @Param('lastName') lastName: string,
   ) {
-    return this.usersService.findOrder(firstName, lastName);
+    return this.usersService.findAll(firstName, lastName);
   }
 
   @Get(':id')
@@ -34,8 +34,8 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update('id', updateUserDto);
+  update(@Param('id') id: string, @Body() updateUser: UpdateUserDto) {
+    return this.usersService.update(id, updateUser);
   }
 
   @Delete(':id')
