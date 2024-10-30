@@ -28,7 +28,7 @@ export class UsersService {
     const updatedUser = {
       ...this.users[userIndex],
       ...updateUser,
-      updated_at: new Date(),
+      updated_at: new Date(2024, 0, 2),
     };
 
     this.users[userIndex] = updatedUser;

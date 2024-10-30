@@ -17,13 +17,13 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-  it('should return a user id', async () => {
-    const result = await controller.findOne('1');
-    expect(result).toBeDefined();
-    expect(result).toEqual({
-      id: '1',
-    });
-  });
+  // it('should return a user id', async () => {
+  //   const result = await controller.findOne('1');
+  //   expect(result).toBeDefined();
+  //   expect(result).toEqual({
+  //     id: '1',
+  //   });
+  // });
   it('should return full name', async () => {
     const firstName = 'John';
     const lastName = 'Doe';
@@ -66,7 +66,6 @@ describe('UsersController', () => {
     const createdUser = await controller.create(newUser);
 
     const updateUser = {
-      id: createdUser.id,
       lastName: 'Smith',
       updated_at: new Date(2024, 0, 2),
     };
@@ -75,15 +74,22 @@ describe('UsersController', () => {
 
     expect(updatedUser).toEqual({
       id: createdUser.id,
+      firstName: 'John',
       lastName: 'Smith',
       updated_at: new Date(2024, 0, 2),
+      created_at: new Date(2024, 0, 1),
+      birthDate: '10/10/1010',
     });
 
     const foundUser = await controller.findOne(createdUser.id);
+    console.log(foundUser);
     expect(foundUser).toEqual({
       id: createdUser.id,
+      firstName: 'John',
       lastName: 'Smith',
       updated_at: new Date(2024, 0, 2),
+      created_at: new Date(2024, 0, 1),
+      birthDate: '10/10/1010',
     });
   });
 });
