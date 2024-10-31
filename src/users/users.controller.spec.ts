@@ -14,16 +14,17 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
+  const newUser = {
+    firstName: 'John',
+    lastName: 'Doe',
+    created_at: new Date(2024, 0, 1),
+    updated_at: new Date(2024, 0, 1),
+    birthDate: '10/10/1010',
+  };
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-  // it('should return a user id', async () => {
-  //   const result = await controller.findOne('1');
-  //   expect(result).toBeDefined();
-  //   expect(result).toEqual({
-  //     id: '1',
-  //   });
-  // });
   it('should return full name', async () => {
     const firstName = 'John';
     const lastName = 'Doe';
@@ -32,14 +33,6 @@ describe('UsersController', () => {
     expect(result).toBe('John Doe');
   });
   it('should create a new user', async () => {
-    const newUser = {
-      firstName: 'John',
-      lastName: 'Doe',
-      created_at: new Date(2024, 0, 1),
-      updated_at: new Date(2024, 0, 1),
-      birthDate: '10/10/1010',
-    };
-
     // incrementando o id
     const createdUser = await controller.create(newUser);
 
@@ -51,18 +44,11 @@ describe('UsersController', () => {
 
     // Buscando usuário
     const foundUser = await controller.findOne(createdUser.id);
-    console.log(foundUser);
+
     expect(foundUser).toEqual(createdUser);
   });
-  it('should update a user', async () => {
-    const newUser = {
-      firstName: 'John',
-      lastName: 'Doe',
-      created_at: new Date(2024, 0, 1),
-      updated_at: new Date(2024, 0, 1),
-      birthDate: '10/10/1010',
-    };
 
+  it('should update a user', async () => {
     // incrementando o id
     const createdUser = await controller.create(newUser);
 
@@ -85,9 +71,9 @@ describe('UsersController', () => {
       birthDate: '10/10/1010',
     });
 
-    // comparando o usuário do banco de dados
     const foundUser = await controller.findOne(createdUser.id);
-    console.log(foundUser);
+
+    // comparando o usuário do banco de dados
     expect(foundUser).toEqual({
       id: createdUser.id,
       firstName: 'John',
@@ -97,14 +83,22 @@ describe('UsersController', () => {
       birthDate: '10/10/1010',
     });
   });
+
+  it('should remove a user', async () => {
+    const createdUser = await controller.create(newUser);
+
+    // Comparando createUser com o user do db
+    expect(createdUser).toEqual({
+      id: createdUser.id,
+      ...newUser,
+    });
+
+    //deletando usuário
+    await controller.remove(createdUser.id);
+
+    // buscando usuário deletado
+    const foundUser = await controller.findOne(createdUser.id);
+
+    expect(foundUser).toBeUndefined();
+  });
 });
-//   it('should delete a user', async () => {
-//     const result = await controller.remove('1');
-//     expect(result).toBeDefined();
-//     expect(result).toEqual({
-//       id: '1',
-//       firstName: 'John',
-//       lastName: 'Doe',
-//     });
-//   });
-// });
