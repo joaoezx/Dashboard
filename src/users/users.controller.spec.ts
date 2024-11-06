@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -14,7 +16,8 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
-  const newUser = {
+  // const newUser: CreateUserDto = {
+  const newUser: CreateUserDto = {
     firstName: 'John',
     lastName: 'Doe',
     created_at: new Date(2024, 0, 1),
@@ -25,27 +28,28 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-  it('should return full name', async () => {
-    const firstName = 'John';
-    const lastName = 'Doe';
-    const result = await controller.findOrder(firstName, lastName);
+
+  it('should return all users', async () => {
+    const result = await controller.findAll();
     expect(result).toBeDefined();
-    expect(result).toBe('John Doe');
+    expect(result).toHaveLength(1);
   });
+
   it('should create a new user', async () => {
     // incrementando o id
     const createdUser = await controller.create(newUser);
 
     // Comparando createUser com o user do db
-    expect(createdUser).toEqual({
-      id: createdUser.id,
-      ...newUser,
-    });
+    expect(createdUser.user_id).toBeDefined();
+    /** Task #6
+     *  Difference between Jest toEqual vs toMatchObject
+     */
+    expect(createdUser).toMatchObject(newUser);
 
     // Buscando usuário
-    const foundUser = await controller.findOne(createdUser.id);
+    const foundUser = await controller.findOne(createdUser.user_id);
 
-    expect(foundUser).toEqual(createdUser);
+    expect(foundUser.user_id).toEqual(createdUser.user_id);
   });
 
   it('should update a user', async () => {
@@ -53,34 +57,51 @@ describe('UsersController', () => {
     const createdUser = await controller.create(newUser);
 
     // novos dados injetados no usuário
-    const updateUser = {
+    const updateUser: UpdateUserDto = {
+      // @ts-expect-error Test if id is removed
+      user_id: '1',
       lastName: 'Smith',
-      updated_at: new Date(2024, 0, 2),
     };
 
     // localizando o usuário pelo id e fazendo o uptade
-    const updatedUser = await controller.update(createdUser.id, updateUser);
+    const updatedUser = await controller.update(
+      createdUser.user_id,
+      updateUser,
+    );
+
+    /** confere se o id é o mesmo */
+    expect(updatedUser.user_id).toEqual(createdUser.user_id);
 
     // comparando se os dados atualizados estão corretos
-    expect(updatedUser).toEqual({
-      id: createdUser.id,
+    expect(updatedUser).toMatchObject({
       firstName: 'John',
       lastName: 'Smith',
-      updated_at: new Date(2024, 0, 2),
-      created_at: new Date(2024, 0, 1),
       birthDate: '10/10/1010',
     });
 
-    const foundUser = await controller.findOne(createdUser.id);
+    expect(updatedUser.created_at).toEqual(createdUser.created_at);
+    expect(updatedUser.updated_at).not.toEqual(createdUser.updated_at);
+
+    const foundUser = await controller.findOne(createdUser.user_id);
 
     // comparando o usuário do banco de dados
-    expect(foundUser).toEqual({
-      id: createdUser.id,
-      firstName: 'John',
+    expect(foundUser).toEqual(updatedUser);
+  });
+
+  it('should not allow to update a user that does not exists', async () => {
+    const user_id = '999';
+    const updateUser: UpdateUserDto = {
+      // @ts-expect-error Test if id is removed
+      user_id: user_id,
       lastName: 'Smith',
-      updated_at: new Date(2024, 0, 2),
-      created_at: new Date(2024, 0, 1),
-      birthDate: '10/10/1010',
+    };
+
+    const updatedUser = await controller.update(user_id, updateUser);
+    /**
+     * Check for throw new Error()
+     */
+    expect(updatedUser).rejects.toEqual({
+      error: 'User does not exists or you are not allowed to do this operation',
     });
   });
 
@@ -89,15 +110,15 @@ describe('UsersController', () => {
 
     // Comparando createUser com o user do db
     expect(createdUser).toEqual({
-      id: createdUser.id,
+      user_id: createdUser.user_id,
       ...newUser,
     });
 
     //deletando usuário
-    await controller.remove(createdUser.id);
+    await controller.remove(createdUser.user_id);
 
     // buscando usuário deletado
-    const foundUser = await controller.findOne(createdUser.id);
+    const foundUser = await controller.findOne(createdUser.user_id);
 
     expect(foundUser).toBeUndefined();
   });
