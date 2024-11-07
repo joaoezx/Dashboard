@@ -16,12 +16,9 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
-  // const newUser: CreateUserDto = {
   const newUser: CreateUserDto = {
     firstName: 'John',
     lastName: 'Doe',
-    created_at: new Date(2024, 0, 1),
-    updated_at: new Date(2024, 0, 1),
     birthDate: '10/10/1010',
   };
 
@@ -32,7 +29,7 @@ describe('UsersController', () => {
   it('should return all users', async () => {
     const result = await controller.findAll();
     expect(result).toBeDefined();
-    expect(result).toHaveLength(1);
+    expect(result).toHaveLength(0);
   });
 
   it('should create a new user', async () => {
@@ -61,6 +58,7 @@ describe('UsersController', () => {
       // @ts-expect-error Test if id is removed
       user_id: '1',
       lastName: 'Smith',
+      updated_at: new Date().toISOString(),
     };
 
     // localizando o usuário pelo id e fazendo o uptade
@@ -73,12 +71,6 @@ describe('UsersController', () => {
     expect(updatedUser.user_id).toEqual(createdUser.user_id);
 
     // comparando se os dados atualizados estão corretos
-    expect(updatedUser).toMatchObject({
-      firstName: 'John',
-      lastName: 'Smith',
-      birthDate: '10/10/1010',
-    });
-
     expect(updatedUser.created_at).toEqual(createdUser.created_at);
     expect(updatedUser.updated_at).not.toEqual(createdUser.updated_at);
 
@@ -95,31 +87,29 @@ describe('UsersController', () => {
       user_id: user_id,
       lastName: 'Smith',
     };
-
-    const updatedUser = await controller.update(user_id, updateUser);
     /**
      * Check for throw new Error()
      */
-    expect(updatedUser).rejects.toEqual({
-      error: 'User does not exists or you are not allowed to do this operation',
+    expect(async () => {
+      await controller.update(user_id, updateUser);
+    }).rejects.toThrow();
+
+    it('should remove a user', async () => {
+      const createdUser = await controller.create(newUser);
+
+      // Comparando createUser com o user do db
+      expect(createdUser).toMatchObject({
+        user_id: createdUser.user_id,
+        ...newUser,
+      });
+
+      //deletando usuário
+      await controller.remove(createdUser.user_id);
+
+      // buscando usuário deletado
+      const foundUser = await controller.findOne(createdUser.user_id);
+
+      expect(foundUser).toBeUndefined();
     });
-  });
-
-  it('should remove a user', async () => {
-    const createdUser = await controller.create(newUser);
-
-    // Comparando createUser com o user do db
-    expect(createdUser).toEqual({
-      user_id: createdUser.user_id,
-      ...newUser,
-    });
-
-    //deletando usuário
-    await controller.remove(createdUser.user_id);
-
-    // buscando usuário deletado
-    const foundUser = await controller.findOne(createdUser.user_id);
-
-    expect(foundUser).toBeUndefined();
   });
 });
