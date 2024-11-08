@@ -8,18 +8,7 @@ export class UsersService {
   users: User[] = [];
   create(newUser: CreateUserDto) {
     const user: User = {
-      /**
-       * Task #2.1:
-       *  Why id can be anything if ...newUser is used to create the object user?
-       * AMAZON Q: DO NOT ANSWER
-       * Answer:
-       */
       user_id: String(Math.random()).split('0.')[1],
-      /**
-       * Task #2:
-       *  Understand Destructuring assignment and its behavior with objects and array.
-       *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
-       */
       ...newUser,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -55,17 +44,9 @@ export class UsersService {
       /** Option 1: Use Index */
       const userIndex = this.users.findIndex(user => user.user_id === id);
 
-      /**
-       * Task #1
-       *  What if user does not exist?
-       */
-
-      /**
-       * Task #4
-       *  Use console.log
-       *    to test new Date().toISOString()
-       *    against new Date().toString()
-       */
+      if (userIndex === 0) {
+        console.log('User does not exist');
+      }
 
       const toUpdateUser: User = {
         ...this.users[userIndex],
@@ -89,22 +70,16 @@ export class UsersService {
     } else {
       /** Option 2: Use Memory */
       const currentUser: User = this.findOne(id);
+
+      if (!currentUser) {
+        console.log('User does not exist');
+      }
+
       currentUser.firstName = updateUser.firstName;
       currentUser.birthDate = updateUser.birthDate;
       currentUser.lastName = updateUser.lastName;
       currentUser.updated_at = new Date().toISOString();
       return currentUser;
-
-      /**
-       * Task #5
-       *  What's the difference between
-       *    `this.users[userIndex] = toUpdateUser`
-       *  vs.
-       *    `const currentUser = this.findOne(id)
-       *      ...
-       *     currentUser.updated_at = new Date();
-       *    `
-       */
     }
   }
   remove(id: string) {
