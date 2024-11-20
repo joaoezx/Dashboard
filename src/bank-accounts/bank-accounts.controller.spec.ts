@@ -14,7 +14,7 @@ describe('BankAccountsController', () => {
     controller = module.get<BankAccountsController>(BankAccountsController);
   });
 
-  it('should be defined', () => {
+  it('should create a new user', () => {
     expect(controller).toBeDefined();
   });
 });

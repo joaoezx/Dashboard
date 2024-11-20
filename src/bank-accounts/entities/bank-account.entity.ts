@@ -15,11 +15,11 @@ export class BankAccount {
   account_description: string;
 
   @Column()
-  initial_ammount: number;
+  initial_amount: number;
 
-  @Column()
-  created_at: string;
+  @Column({ nullable: true })
+  created_at: Date;
 
-  @Column()
-  updated_at: string;
+  @Column({ nullable: true })
+  updated_at: Date;
 }
