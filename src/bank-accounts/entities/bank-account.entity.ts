@@ -5,21 +5,15 @@ export class BankAccount {
   @PrimaryGeneratedColumn()
   user_id: string;
 
-  @Column()
+  @Column('varchar', { length: 100 })
   account_name: string;
 
-  @Column()
+  @Column('varchar', { length: 100 })
   account_type: string;
 
-  @Column()
+  @Column('varchar', { length: 200 })
   account_description: string;
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 2 })
   initial_amount: number;
-
-  @Column({ nullable: true })
-  created_at: Date;
-
-  @Column({ nullable: true })
-  updated_at: Date;
 }

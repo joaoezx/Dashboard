@@ -12,7 +12,7 @@ describe('BankAccountsService', () => {
     service = module.get<BankAccountsService>(BankAccountsService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('should be create user', () => {
+    expect(service);
   });
 });

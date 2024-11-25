@@ -3,34 +3,44 @@ import { UpdateBankAccountDto } from './dto/update-bank-account.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BankAccount } from './entities/bank-account.entity';
 import { Repository } from 'typeorm';
+import { CreateBankAccountDto } from './dto/create-bank-account.dto';
 
 @Injectable()
 export class BankAccountsService {
   constructor(
     @InjectRepository(BankAccount)
     private readonly bankAccountRepository: Repository<BankAccount>,
-    // permite realizar operações no db relacionado a entidade
+    // permite realizar operações no db
   ) {}
 
-  async create(data: Partial<BankAccount>) {
-    // permite que seja enviada uma parte parcial dos dados
-    const newRecord = this.bankAccountRepository.create(data);
-    return await this.bankAccountRepository.save(newRecord);
+  async create(dto: CreateBankAccountDto) {
+    const newAccount = this.bankAccountRepository.create(dto);
+    return await this.bankAccountRepository.save(newAccount);
   }
 
   findAll() {
-    return `This action returns all bankAccounts`;
+    return this.bankAccountRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bankAccount`;
+  findOne(user_id: string) {
+    return this.bankAccountRepository.findOne({
+      where: { user_id },
+    });
   }
 
-  update(id: number, updateBankAccountDto: UpdateBankAccountDto) {
-    return `This action updates a #${updateBankAccountDto} bankAccount`;
+  async patch(user_id: string, updateDto: UpdateBankAccountDto) {
+    await this.bankAccountRepository.update(user_id, updateDto);
+
+    return this.bankAccountRepository.findOne({
+      where: { user_id },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bankAccount`;
+  async remove(user_id: string) {
+    await this.bankAccountRepository.delete(user_id);
+
+    return this.bankAccountRepository.findOne({
+      where: { user_id },
+    });
   }
 }
