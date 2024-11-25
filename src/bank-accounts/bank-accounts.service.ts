@@ -29,7 +29,7 @@ export class BankAccountsService {
   }
 
   async update(user_id: string, updateDto: UpdateBankAccountDto) {
-    await this.bankAccountRepository.update(user_id, updateDto);
+    await this.bankAccountRepository.update({ user_id }, updateDto);
 
     return this.bankAccountRepository.findOne({
       where: { user_id },

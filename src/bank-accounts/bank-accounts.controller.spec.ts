@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BankAccountsController } from './bank-accounts.controller';
 import { BankAccountsService } from './bank-accounts.service';
+import { CreateBankAccountDto } from './dto/create-bank-account.dto';
 
 describe('BankAccountsController', () => {
   let controller: BankAccountsController;
@@ -14,7 +15,12 @@ describe('BankAccountsController', () => {
     controller = module.get<BankAccountsController>(BankAccountsController);
   });
 
-  it('should create a new user', () => {
-    expect(controller).toBeDefined();
-  });
+  const newAccount: CreateBankAccountDto = {
+    account_name: 'Caixinha',
+    account_type: 'Poupanca',
+    account_description: 'Conta poupanca',
+    initial_amount: 1000,
+  };
+
+  it('should be create a new user', async () => {});
 });
