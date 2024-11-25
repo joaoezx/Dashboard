@@ -28,7 +28,7 @@ export class BankAccountsService {
     });
   }
 
-  async patch(user_id: string, updateDto: UpdateBankAccountDto) {
+  async update(user_id: string, updateDto: UpdateBankAccountDto) {
     await this.bankAccountRepository.update(user_id, updateDto);
 
     return this.bankAccountRepository.findOne({

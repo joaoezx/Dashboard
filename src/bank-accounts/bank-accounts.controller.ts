@@ -27,7 +27,7 @@ export class BankAccountsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.bankAccountsService.findOne(+id);
+    return this.bankAccountsService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class BankAccountsController {
     @Param('id') id: string,
     @Body() updateBankAccountDto: UpdateBankAccountDto,
   ) {
-    return this.bankAccountsService.update(+id, updateBankAccountDto);
+    return this.bankAccountsService.update(id, updateBankAccountDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.bankAccountsService.remove(+id);
+    return this.bankAccountsService.remove(id);
   }
 }

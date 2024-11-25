@@ -20,14 +20,6 @@ export class UsersController {
     return this.usersService.create(newUsers);
   }
 
-  // @Get(':id')
-  // findOrder(
-  //   @Param('firstName') firstName: string,
-  //   @Param('lastName') lastName: string,
-  // ) {
-  //   return this.usersService.findAll(firstName, lastName);
-  // }
-
   @Get()
   findAll() {
     return this.usersService.findAll();
