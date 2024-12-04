@@ -5,6 +5,9 @@ export class BankAccount {
   @PrimaryGeneratedColumn()
   user_id: string;
 
+  @Column()
+  account_id: string;
+
   @Column('varchar', { length: 100 })
   account_name: string;
 

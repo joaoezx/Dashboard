@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BankAccountsModule } from './bank-accounts/bank-accounts.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { BankAccountsModule } from './bank-accounts/bank-accounts.module';
       synchronize: true,
     }),
     BankAccountsModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
