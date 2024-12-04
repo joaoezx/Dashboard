@@ -19,19 +19,9 @@ export class CreateTransactionDto {
   })
   type: string;
 
-  @IsNotEmpty({ message: 'O user_id é obrigatório.' })
-  @IsString({ message: 'O user_id deve ser uma string.' })
-  user_id: string;
-
   @IsNotEmpty({ message: 'O account_id é obrigatório.' })
   @IsString({ message: 'O account_id deve ser uma string.' })
   account_id: string;
-
-  @IsNotEmpty({ message: 'O status é obrigatório.' })
-  @IsIn(['pending', 'confirmed', 'reimbursed'], {
-    message: 'O status deve ser pending, confirmed ou reimbursed.',
-  })
-  status: string;
 
   @IsString({ message: 'A descrição deve ser uma string.' })
   @Length(0, 200, { message: 'A descrição deve ter no máximo 200 caracteres.' })

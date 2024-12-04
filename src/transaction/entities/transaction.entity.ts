@@ -11,11 +11,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('transaction')
+import { BankAccount } from 'src/bank-accounts/entities/bank-account.entity';
+
+@Entity()
 export class Transaction {
   @PrimaryGeneratedColumn()
   id: string;
@@ -61,4 +64,7 @@ export class Transaction {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @ManyToOne(() => BankAccount, bankAccount => bankAccount.transactions)
+  bankAccount: BankAccount;
 }

@@ -1,12 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Transaction } from 'src/transaction/entities/transaction.entity';
 
 @Entity()
 export class BankAccount {
   @PrimaryGeneratedColumn()
-  user_id: string;
-
-  @Column()
-  account_id: string;
+  id: string;
 
   @Column('varchar', { length: 100 })
   account_name: string;
@@ -19,4 +17,7 @@ export class BankAccount {
 
   @Column('decimal', { precision: 10, scale: 2 })
   initial_amount: number;
+
+  @OneToMany(() => Transaction, transaction => transaction.bankAccount)
+  transactions: Transaction[];
 }

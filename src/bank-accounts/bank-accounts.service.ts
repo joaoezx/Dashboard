@@ -14,33 +14,33 @@ export class BankAccountsService {
   ) {}
 
   async create(dto: CreateBankAccountDto) {
-    const newAccount = this.bankAccountRepository.create(dto);
-    return await this.bankAccountRepository.save(newAccount);
+    const bankAccount = this.bankAccountRepository.create(dto);
+    return await this.bankAccountRepository.save(bankAccount);
   }
 
   findAll() {
     return this.bankAccountRepository.find();
   }
 
-  findOne(user_id: string) {
+  findOne(id: string) {
     return this.bankAccountRepository.findOne({
-      where: { user_id },
+      where: { id },
     });
   }
 
-  async update(user_id: string, updateDto: UpdateBankAccountDto) {
-    await this.bankAccountRepository.update({ user_id }, updateDto);
+  async update(id: string, updateDto: UpdateBankAccountDto) {
+    await this.bankAccountRepository.update({ id }, updateDto);
 
     return this.bankAccountRepository.findOne({
-      where: { user_id },
+      where: { id },
     });
   }
 
-  async remove(user_id: string) {
-    await this.bankAccountRepository.delete(user_id);
+  async remove(id: string) {
+    await this.bankAccountRepository.delete(id);
 
     return this.bankAccountRepository.findOne({
-      where: { user_id },
+      where: { id },
     });
   }
 }
